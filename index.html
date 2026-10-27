@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOTHING — The Gate</title>
+<style>
+  :root { color-scheme: dark; --bg:#000; --panel:#090909; --line:#292929; --text:#f5f5f5; --muted:#888; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:#000; color:var(--text); font-family:Arial,Helvetica,sans-serif; display:grid; place-items:center; padding:22px; overflow-x:hidden; }
+  body:before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.15; background-image:linear-gradient(#222 1px,transparent 1px),linear-gradient(90deg,#222 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse at center,#000,transparent 75%); }
+  .wrap { width:min(680px,100%); position:relative; }
+  .top { display:flex; justify-content:space-between; gap:12px; color:#777; font-size:11px; letter-spacing:3px; margin-bottom:22px; }
+  .card { background:rgba(8,8,8,.96); border:1px solid var(--line); padding:clamp(24px,6vw,48px); box-shadow:0 0 0 1px #050505,0 24px 80px #000; }
+  .eyebrow { font-size:11px; color:#888; letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
+  h1 { font-size:clamp(34px,8vw,58px); line-height:.98; letter-spacing:-2px; margin:0 0 18px; font-weight:800; }
+  p { color:#aaa; line-height:1.65; font-size:14px; }
+  .progress-meta { display:flex; justify-content:space-between; color:#777; font-size:11px; letter-spacing:1px; margin:30px 0 9px; }
+  .track { height:3px; background:#222; margin-bottom:30px; overflow:hidden; }
+  .bar { height:100%; width:0%; background:#eee; transition:width .3s ease; }
+  #question { font-size:clamp(20px,4vw,27px); line-height:1.3; margin:0 0 22px; }
+  .answers { display:grid; gap:10px; }
+  button { font:inherit; cursor:pointer; }
+  .answer,.main-btn { border:1px solid #333; background:#050505; color:#eee; text-align:left; padding:15px 17px; transition:background .18s,border-color .18s,transform .18s; }
+  .answer:hover:not(:disabled) { background:#151515; border-color:#888; transform:translateX(3px); }
+  .answer:focus-visible,.main-btn:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+  .answer:disabled { cursor:default; opacity:.72; }
+  .answer.correct { background:#141414; border-color:#eee; color:#fff; }
+  .answer.wrong { background:#101010; border-color:#666; }
+  .main-btn { width:100%; text-align:center; margin-top:24px; background:#f2f2f2; color:#000; font-weight:800; letter-spacing:2px; text-transform:uppercase; }
+  .main-btn:hover { background:#cfcfcf; }
+  .foot { text-align:center; margin-top:18px; color:#555; font-size:10px; letter-spacing:2px; }
+  .feedback { min-height:20px; font-size:12px; color:#aaa; margin-top:14px; line-height:1.4; }
+  .hidden { display:none !important; }
+  .result { min-height:230px; display:grid; place-items:center; text-align:center; border:0; box-shadow:none; background:transparent; padding:0; }
+  .result h2 { font-size:clamp(42px,12vw,76px); margin:0; letter-spacing:-3px; color:#fff; font-weight:900; }
+  body.finished:before { display:none; }
+  body.finished { padding:0; }
+  body.finished .wrap { width:auto; }
+  @media(max-width:480px) { .top { letter-spacing:1.5px; } .card { padding:24px 19px; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top" id="topHeader"><span>THE GATE</span><span>ACCESS PROTOCOL // 001</span></div>
+  <section class="card" id="quizCard">
+    <div class="eyebrow">Restricted entry</div>
+    <h1>Prove you<br>belong here.</h1>
+    <p>70 questions. Har sawal ka ek sahi jawab hai. Galat hua toh dobara try karo. Questions aur options har session mein random order mein aayenge.</p>
+    <button class="main-btn" id="startBtn">Begin the test</button>
+    <div class="foot">THINK CAREFULLY. OR DON'T.</div>
+  </section>
+  <section class="card hidden" id="questionCard" aria-live="polite">
+    <div class="eyebrow">Verification in progress</div>
+    <div class="progress-meta"><span id="counter">QUESTION 01 / 70</span><span id="percent">0%</span></div>
+    <div class="track"><div class="bar" id="bar"></div></div>
+    <h2 id="question">Question goes here</h2>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  </section>
+  <section class="card hidden result" id="resultCard"><h2>nothing</h2></section>
+  <div class="foot" id="footerNote">NO HINTS. NO EXPLANATIONS.</div>
+</main>
+<script>
+const questions = [
+  {
+    "q": "What is 2 + 2?",
+    "correct": "4",
+    "wrong": [
+      "3",
+      "5",
+      "6"
+    ]
+  },
+  {
+    "q": "What is 9 × 7?",
+    "correct": "63",
+    "wrong": [
+      "56",
+      "72",
+      "67"
+    ]
+  },
+  {
+    "q": "What is 12 × 12?",
+    "correct": "144",
+    "wrong": [
+      "124",
+      "132",
+      "154"
+    ]
+  },
+  {
+    "q": "What is 5 squared?",
+    "correct": "25",
+    "wrong": [
+      "10",
+      "15",
+      "20"
+    ]
+  },
+  {
+    "q": "What is the square root of 81?",
+    "correct": "9",
+    "wrong": [
+      "8",
+      "7",
+      "10"
+    ]
+  },
+  {
+    "q": "100 centimetres equal how many metres?",
+    "correct": "1 metre",
+    "wrong": [
+      "10 metres",
+      "0.1 metre",
+      "100 metres"
+    ]
+  },
+  {
+    "q": "1 kilometre equals how many metres?",
+    "correct": "1,000 metres",
+    "wrong": [
+      "100 metres",
+      "10,000 metres",
+      "100,000 metres"
+    ]
+  },
+  {
+    "q": "How many minutes are in one hour?",
+    "correct": "60",
+    "wrong": [
+      "30",
+      "90",
+      "100"
+    ]
+  },
+  {
+    "q": "How many days are in a standard week?",
+    "correct": "7",
+    "wrong": [
+      "5",
+      "6",
+      "8"
+    ]
+  },
+  {
+    "q": "How many days are in a leap year?",
+    "correct": "366",
+    "wrong": [
+      "364",
+      "365",
+      "367"
+    ]
+  },
+  {
+    "q": "How many sides does a square have?",
+    "correct": "4",
+    "wrong": [
+      "3",
+      "5",
+      "6"
+    ]
+  },
+  {
+    "q": "How many sides does a triangle have?",
+    "correct": "3",
+    "wrong": [
+      "2",
+      "4",
+      "5"
+    ]
+  },
+  {
+    "q": "How many degrees are in a right angle?",
+    "correct": "90°",
+    "wrong": [
+      "45°",
+      "180°",
+      "360°"
+    ]
+  },
+  {
+    "q": "What number does the Roman numeral X represent?",
+    "correct": "10",
+    "wrong": [
+      "5",
+      "50",
+      "100"
+    ]
+  },
+  {
+    "q": "What is the smallest prime number?",
+    "correct": "2",
+    "wrong": [
+      "1",
+      "3",
+      "0"
+    ]
+  },
+  {
+    "q": "Which fraction equals 0.5?",
+    "correct": "1/2",
+    "wrong": [
+      "1/3",
+      "1/4",
+      "2/3"
+    ]
+  },
+  {
+    "q": "What is 15% of 200?",
+    "correct": "30",
+    "wrong": [
+      "15",
+      "20",
+      "45"
+    ]
+  },
+  {
+    "q": "What is 144 ÷ 12?",
+    "correct": "12",
+    "wrong": [
+      "10",
+      "11",
+      "14"
+    ]
+  },
+  {
+    "q": "What is 3 × (4 + 2)?",
+    "correct": "18",
+    "wrong": [
+      "14",
+      "20",
+      "24"
+    ]
+  },
+  {
+    "q": "What is the perimeter of a square with sides 5 cm long?",
+    "correct": "20 cm",
+    "wrong": [
+      "10 cm",
+      "15 cm",
+      "25 cm"
+    ]
+  },
+  {
+    "q": "Which is the largest planet in our Solar System?",
+    "correct": "Jupiter",
+    "wrong": [
+      "Saturn",
+      "Earth",
+      "Neptune"
+    ]
+  },
+  {
+    "q": "Which planet is commonly called the Red Planet?",
+    "correct": "Mars",
+    "wrong": [
+      "Venus",
+      "Mercury",
+      "Jupiter"
+    ]
+  },
+  {
+    "q": "What kind of object is the Sun?",
+    "correct": "A star",
+    "wrong": [
+      "A planet",
+      "A moon",
+      "An asteroid"
+    ]
+  },
+  {
+    "q": "What is Earth's natural satellite?",
+    "correct": "The Moon",
+    "wrong": [
+      "Mars",
+      "The Sun",
+      "Venus"
+    ]
+  },
+  {
+    "q": "About how long does Earth take to orbit the Sun once?",
+    "correct": "365 days",
+    "wrong": [
+      "24 hours",
+      "30 days",
+      "600 days"
+    ]
+  },
+  {
+    "q": "About how long does Earth take to rotate once?",
+    "correct": "24 hours",
+    "wrong": [
+      "12 hours",
+      "7 days",
+      "365 days"
+    ]
+  },
+  {
+    "q": "What is the chemical formula for water?",
+    "correct": "H₂O",
+    "wrong": [
+      "CO₂",
+      "O₂",
+      "NaCl"
+    ]
+  },
+  {
+    "q": "What is the chemical symbol for oxygen?",
+    "correct": "O",
+    "wrong": [
+      "Ox",
+      "Og",
+      "Oy"
+    ]
+  },
+  {
+    "q": "What is the chemical symbol for gold?",
+    "correct": "Au",
+    "wrong": [
+      "Ag",
+      "Gd",
+      "Go"
+    ]
+  },
+  {
+    "q": "What is the chemical symbol for sodium?",
+    "correct": "Na",
+    "wrong": [
+      "So",
+      "S",
+      "Sd"
+    ]
+  },
+  {
+    "q": "At sea level, water boils at approximately what temperature?",
+    "correct": "100°C",
+    "wrong": [
+      "0°C",
+      "50°C",
+      "150°C"
+    ]
+  },
+  {
+    "q": "At standard pressure, water freezes at what temperature?",
+    "correct": "0°C",
+    "wrong": [
+      "-10°C",
+      "10°C",
+      "32°C"
+    ]
+  },
+  {
+    "q": "What is the SI unit of force?",
+    "correct": "Newton",
+    "wrong": [
+      "Joule",
+      "Watt",
+      "Pascal"
+    ]
+  },
+  {
+    "q": "What is the SI unit of energy?",
+    "correct": "Joule",
+    "wrong": [
+      "Newton",
+      "Ampere",
+      "Metre"
+    ]
+  },
+  {
+    "q": "What is the SI unit of electric current?",
+    "correct": "Ampere",
+    "wrong": [
+      "Volt",
+      "Ohm",
+      "Watt"
+    ]
+  },
+  {
+    "q": "At ordinary conditions, sound generally travels faster through which medium?",
+    "correct": "Water",
+    "wrong": [
+      "Air",
+      "A vacuum",
+      "It cannot travel through water"
+    ]
+  },
+  {
+    "q": "What process do green plants use to make food with sunlight?",
+    "correct": "Photosynthesis",
+    "wrong": [
+      "Fermentation",
+      "Digestion",
+      "Condensation"
+    ]
+  },
+  {
+    "q": "Which organ pumps blood around the human body?",
+    "correct": "The heart",
+    "wrong": [
+      "The liver",
+      "The stomach",
+      "The pancreas"
+    ]
+  },
+  {
+    "q": "Which organs are primarily responsible for gas exchange during breathing?",
+    "correct": "The lungs",
+    "wrong": [
+      "The kidneys",
+      "The intestines",
+      "The spleen"
+    ]
+  },
+  {
+    "q": "How many bones does a typical adult human skeleton have?",
+    "correct": "206",
+    "wrong": [
+      "106",
+      "156",
+      "306"
+    ]
+  },
+  {
+    "q": "How many legs does a spider have?",
+    "correct": "8",
+    "wrong": [
+      "6",
+      "10",
+      "12"
+    ]
+  },
+  {
+    "q": "What is the larval stage of a butterfly commonly called?",
+    "correct": "Caterpillar",
+    "wrong": [
+      "Tadpole",
+      "Nymph",
+      "Pupa"
+    ]
+  },
+  {
+    "q": "Which group of animals feeds its young with milk?",
+    "correct": "Mammals",
+    "wrong": [
+      "Reptiles",
+      "Fish",
+      "Insects"
+    ]
+  },
+  {
+    "q": "A frog belongs to which animal group?",
+    "correct": "Amphibians",
+    "wrong": [
+      "Reptiles",
+      "Mammals",
+      "Birds"
+    ]
+  },
+  {
+    "q": "What is the largest living land animal?",
+    "correct": "African elephant",
+    "wrong": [
+      "Giraffe",
+      "Hippopotamus",
+      "Rhinoceros"
+    ]
+  },
+  {
+    "q": "Which is the fastest land animal over short distances?",
+    "correct": "Cheetah",
+    "wrong": [
+      "Lion",
+      "Horse",
+      "Grey wolf"
+    ]
+  },
+  {
+    "q": "What is the largest hot desert on Earth?",
+    "correct": "Sahara Desert",
+    "wrong": [
+      "Gobi Desert",
+      "Kalahari Desert",
+      "Arabian Desert"
+    ]
+  },
+  {
+    "q": "Which is the largest ocean on Earth?",
+    "correct": "Pacific Ocean",
+    "wrong": [
+      "Atlantic Ocean",
+      "Indian Ocean",
+      "Arctic Ocean"
+    ]
+  },
+  {
+    "q": "Which mountain is highest above sea level?",
+    "correct": "Mount Everest",
+    "wrong": [
+      "K2",
+      "Kilimanjaro",
+      "Mont Blanc"
+    ]
+  },
+  {
+    "q": "What is the capital of India?",
+    "correct": "New Delhi",
+    "wrong": [
+      "Mumbai",
+      "Kolkata",
+      "Jaipur"
+    ]
+  },
+  {
+    "q": "What is the capital of Japan?",
+    "correct": "Tokyo",
+    "wrong": [
+      "Kyoto",
+      "Osaka",
+      "Nagoya"
+    ]
+  },
+  {
+    "q": "The Taj Mahal is in which Indian city?",
+    "correct": "Agra",
+    "wrong": [
+      "Delhi",
+      "Lucknow",
+      "Bhopal"
+    ]
+  },
+  {
+    "q": "The famous Pyramids of Giza are in which country?",
+    "correct": "Egypt",
+    "wrong": [
+      "Mexico",
+      "Greece",
+      "India"
+    ]
+  },
+  {
+    "q": "How many letters are in the modern English alphabet?",
+    "correct": "26",
+    "wrong": [
+      "24",
+      "25",
+      "28"
+    ]
+  },
+  {
+    "q": "What is CSS mainly used for in web development?",
+    "correct": "Styling web pages",
+    "wrong": [
+      "Storing passwords",
+      "Hosting websites",
+      "Sending email"
+    ]
+  },
+  {
+    "q": "What does HTML stand for?",
+    "correct": "HyperText Markup Language",
+    "wrong": [
+      "HighText Machine Language",
+      "Hyperlink Transfer Main Language",
+      "Home Tool Markup Language"
+    ]
+  },
+  {
+    "q": "What is JavaScript commonly used for on websites?",
+    "correct": "Adding interactivity",
+    "wrong": [
+      "Replacing all internet connections",
+      "Printing physical books",
+      "Charging a battery"
+    ]
+  },
+  {
+    "q": "What does URL stand for?",
+    "correct": "Uniform Resource Locator",
+    "wrong": [
+      "Universal Record Link",
+      "Unified Routing List",
+      "User Reference Location"
+    ]
+  },
+  {
+    "q": "Which two digits are used in the binary number system?",
+    "correct": "0 and 1",
+    "wrong": [
+      "1 and 2",
+      "0 and 9",
+      "2 and 8"
+    ]
+  },
+  {
+    "q": "What does CPU stand for?",
+    "correct": "Central Processing Unit",
+    "wrong": [
+      "Computer Power Utility",
+      "Central Program Upload",
+      "Core Performance User"
+    ]
+  },
+  {
+    "q": "Which statement about ordinary computer RAM is true?",
+    "correct": "It is volatile memory",
+    "wrong": [
+      "It always keeps data without power",
+      "It is an optical disc",
+      "It is a type of printer"
+    ]
+  },
+  {
+    "q": "Which of these is an input device?",
+    "correct": "Keyboard",
+    "wrong": [
+      "Monitor",
+      "Speaker",
+      "Projector"
+    ]
+  },
+  {
+    "q": "Which of these is an output device?",
+    "correct": "Monitor",
+    "wrong": [
+      "Mouse",
+      "Keyboard",
+      "Microphone"
+    ]
+  },
+  {
+    "q": "What does HTTPS help provide for a website connection?",
+    "correct": "Encryption in transit",
+    "wrong": [
+      "Unlimited storage",
+      "A guaranteed virus-free computer",
+      "Faster typing"
+    ]
+  },
+  {
+    "q": "In a typical email address, what does the @ symbol separate?",
+    "correct": "The local part and the domain",
+    "wrong": [
+      "The subject and message",
+      "The username and password",
+      "The file name and extension"
+    ]
+  },
+  {
+    "q": "Which file extension commonly indicates a JPEG image?",
+    "correct": ".jpg",
+    "wrong": [
+      ".mp3",
+      ".txt",
+      ".exe"
+    ]
+  },
+  {
+    "q": "What does PNG stand for?",
+    "correct": "Portable Network Graphics",
+    "wrong": [
+      "Personal Number Grid",
+      "Public Network Gateway",
+      "Printed New Graphic"
+    ]
+  },
+  {
+    "q": "Which spreadsheet function adds numbers together?",
+    "correct": "SUM",
+    "wrong": [
+      "COUNTBLANK",
+      "LEFT",
+      "ROUNDUPTEXT"
+    ]
+  },
+  {
+    "q": "What is a web browser primarily used to do?",
+    "correct": "Access and view websites",
+    "wrong": [
+      "Physically repair a computer",
+      "Create electricity",
+      "Replace the operating system"
+    ]
+  },
+  {
+    "q": "In Windows, which function key commonly refreshes a browser page?",
+    "correct": "F5",
+    "wrong": [
+      "F1",
+      "F8",
+      "F12"
+    ]
+  }
+];
+let questionOrder = [];
+let index = 0;
+let locked = false;
+const startBtn = document.getElementById('startBtn');
+const quizCard = document.getElementById('quizCard');
+const questionCard = document.getElementById('questionCard');
+const resultCard = document.getElementById('resultCard');
+const questionEl = document.getElementById('question');
+const answersEl = document.getElementById('answers');
+const counter = document.getElementById('counter');
+const percent = document.getElementById('percent');
+const bar = document.getElementById('bar');
+const topHeader = document.getElementById('topHeader');
+const footerNote = document.getElementById('footerNote');
+const feedback = document.getElementById('feedback');
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+startBtn.addEventListener('click', () => {
+  questionOrder = shuffle(questions);
+  index = 0;
+  quizCard.classList.add('hidden');
+  questionCard.classList.remove('hidden');
+  showQuestion();
+});
+function showQuestion() {
+  locked = false;
+  const item = questionOrder[index];
+  const done = Math.round((index / questionOrder.length) * 100);
+  counter.textContent = `QUESTION ${String(index + 1).padStart(2, '0')} / ${questionOrder.length}`;
+  percent.textContent = `${done}%`;
+  bar.style.width = `${done}%`;
+  questionEl.textContent = item.q;
+  feedback.textContent = '';
+  answersEl.replaceChildren();
+  const options = shuffle([item.correct, ...item.wrong]);
+  options.forEach(answer => {
+    const btn = document.createElement('button');
+    btn.className = 'answer';
+    btn.textContent = answer;
+    btn.addEventListener('click', () => chooseAnswer(btn, answer, item));
+    answersEl.appendChild(btn);
+  });
+}
+function chooseAnswer(button, answer, item) {
+  if (locked) return;
+  if (answer !== item.correct) {
+    button.classList.add('wrong');
+    feedback.textContent = 'Galat jawab. Dobara try karo.';
+    return;
+  }
+  locked = true;
+  button.classList.add('correct');
+  answersEl.querySelectorAll('button').forEach(btn => btn.disabled = true);
+  feedback.textContent = 'Sahi jawab.';
+  const nextIndex = index + 1;
+  bar.style.width = `${Math.round((nextIndex / questionOrder.length) * 100)}%`;
+  percent.textContent = `${Math.round((nextIndex / questionOrder.length) * 100)}%`;
+  setTimeout(() => {
+    index = nextIndex;
+    if (index >= questionOrder.length) {
+      questionCard.classList.add('hidden');
+      resultCard.classList.remove('hidden');
+      topHeader.classList.add('hidden');
+      footerNote.classList.add('hidden');
+      document.body.classList.add('finished');
+    } else {
+      showQuestion();
+    }
+  }, 420);
+}
+</script>
+</body>
+</html>
