@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<meta name="description" content="A locked gate. Seventy difficult challenges. One final screen.">
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-JB6ZCD4C07"></script>
 <script>
@@ -13,713 +15,170 @@
 </script>
 <!-- AdSense Auto Ads. Ads display only if the site is approved and Auto ads are enabled in AdSense. -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3529745369901340" crossorigin="anonymous"></script>
-<title>NOTHING — The Gate</title>
+<title>THE LAST DOOR — Entry Protocol</title>
 <style>
-  :root { color-scheme: dark; --bg:#000; --panel:#090909; --line:#292929; --text:#f5f5f5; --muted:#888; }
-  * { box-sizing:border-box; }
-  body { margin:0; min-height:100vh; background:#000; color:var(--text); font-family:Arial,Helvetica,sans-serif; display:grid; place-items:center; padding:22px; overflow-x:hidden; }
-  body:before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.15; background-image:linear-gradient(#222 1px,transparent 1px),linear-gradient(90deg,#222 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse at center,#000,transparent 75%); }
-  .wrap { width:min(680px,100%); position:relative; }
-  .brand-logo { display:block; width:min(190px,48vw); height:auto; margin:0 auto 18px; object-fit:contain; filter:drop-shadow(0 0 18px rgba(255,255,255,.12)); }
-  body.finished .brand-logo { display:none; }
-  .top { display:flex; justify-content:space-between; gap:12px; color:#777; font-size:11px; letter-spacing:3px; margin-bottom:22px; }
-  .card { background:rgba(8,8,8,.96); border:1px solid var(--line); padding:clamp(24px,6vw,48px); box-shadow:0 0 0 1px #050505,0 24px 80px #000; }
-  .eyebrow { font-size:11px; color:#888; letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
-  h1 { font-size:clamp(34px,8vw,58px); line-height:.98; letter-spacing:-2px; margin:0 0 18px; font-weight:800; }
-  p { color:#aaa; line-height:1.65; font-size:14px; }
-  .progress-meta { display:flex; justify-content:space-between; color:#777; font-size:11px; letter-spacing:1px; margin:30px 0 9px; }
-  .track { height:3px; background:#222; margin-bottom:30px; overflow:hidden; }
-  .bar { height:100%; width:0%; background:#eee; transition:width .3s ease; }
-  #question { font-size:clamp(20px,4vw,27px); line-height:1.3; margin:0 0 22px; }
-  .answers { display:grid; gap:10px; }
-  button { font:inherit; cursor:pointer; }
-  .answer,.main-btn { border:1px solid #333; background:#050505; color:#eee; text-align:left; padding:15px 17px; transition:background .18s,border-color .18s,transform .18s; }
-  .answer:hover:not(:disabled) { background:#151515; border-color:#888; transform:translateX(3px); }
-  .answer:focus-visible,.main-btn:focus-visible { outline:2px solid #fff; outline-offset:3px; }
-  .answer:disabled { cursor:default; opacity:.72; }
-  .answer.correct { background:#141414; border-color:#eee; color:#fff; }
-  .answer.wrong { background:#101010; border-color:#666; }
-  .main-btn { width:100%; text-align:center; margin-top:24px; background:#f2f2f2; color:#000; font-weight:800; letter-spacing:2px; text-transform:uppercase; }
-  .main-btn:hover { background:#cfcfcf; }
-  .foot { text-align:center; margin-top:18px; color:#555; font-size:10px; letter-spacing:2px; }
-  .feedback { min-height:20px; font-size:12px; color:#aaa; margin-top:14px; line-height:1.4; }
-  .hidden { display:none !important; }
-  .result { min-height:230px; display:grid; place-items:center; text-align:center; border:0; box-shadow:none; background:transparent; padding:0; }
-  .result h2 { font-size:clamp(42px,12vw,76px); margin:0; letter-spacing:-3px; color:#fff; font-weight:900; }
-  body.finished:before { display:none; }
-  body.finished { padding:0; }
-  body.finished .wrap { width:auto; }
-  @media(max-width:480px) { .top { letter-spacing:1.5px; } .card { padding:24px 19px; } }
+:root {
+  color-scheme: dark;
+  --bg:#050505; --surface:#0b0b0b; --surface-2:#101010; --line:#292929;
+  --line-strong:#454545; --text:#f3f3f3; --muted:#909090; --dim:#606060;
+  --white:#fff; --success:#d9d9d9; --danger:#9a9a9a;
+}
+* { box-sizing:border-box; }
+html { min-height:100%; background:var(--bg); }
+body {
+  margin:0; min-height:100vh; padding:34px 22px 26px; color:var(--text);
+  background:radial-gradient(ellipse at 50% -16%, #242424 0%, #0c0c0c 34%, #050505 72%);
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display:flex; justify-content:center; align-items:center; overflow-x:hidden;
+}
+body::before {
+  content:""; position:fixed; inset:0; pointer-events:none; opacity:.12;
+  background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);
+  background-size:64px 64px; mask-image:radial-gradient(ellipse at center,black 0%,transparent 76%);
+}
+button { font:inherit; }
+.shell { width:min(900px,100%); position:relative; z-index:1; }
+.topline { display:flex; align-items:center; justify-content:space-between; gap:14px; margin:0 2px 18px; color:#777; font-size:10px; letter-spacing:2.6px; text-transform:uppercase; }
+.topline-left { display:flex; align-items:center; gap:9px; }
+.status-dot { width:6px; height:6px; border-radius:50%; background:#d7d7d7; box-shadow:0 0 12px #fff; }
+.topline-right { color:#555; text-align:right; }
+.brand-logo { display:block; width:min(210px,54vw); aspect-ratio:1; height:auto; object-fit:contain; margin:0 auto 8px; filter:drop-shadow(0 12px 38px rgba(255,255,255,.09)); }
+.panel {
+  position:relative; overflow:hidden; border:1px solid #303030; border-radius:20px;
+  background:linear-gradient(145deg,rgba(17,17,17,.97),rgba(7,7,7,.98));
+  box-shadow:0 26px 90px rgba(0,0,0,.72), inset 0 1px 0 rgba(255,255,255,.035);
+}
+.panel::before { content:""; position:absolute; inset:0 0 auto; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent); pointer-events:none; }
+.welcome { padding:clamp(28px,6vw,58px); text-align:center; }
+.eyebrow { display:inline-flex; align-items:center; gap:9px; margin-bottom:19px; color:#a4a4a4; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; }
+.eyebrow::before,.eyebrow::after { content:""; width:20px; height:1px; background:#555; }
+h1 { margin:0; font-size:clamp(39px,7vw,66px); line-height:.99; letter-spacing:-2.9px; font-weight:780; }
+.lead { max-width:560px; margin:20px auto 0; color:#a2a2a2; font-size:14px; line-height:1.8; }
+.specs { display:flex; flex-wrap:wrap; justify-content:center; gap:9px; margin:27px 0 0; }
+.spec { border:1px solid #303030; background:#090909; border-radius:999px; padding:8px 12px; color:#a8a8a8; font-size:10px; letter-spacing:1.2px; text-transform:uppercase; }
+.primary-btn {
+  display:flex; align-items:center; justify-content:center; gap:13px; width:min(360px,100%); min-height:56px;
+  margin:32px auto 0; padding:0 22px; border:1px solid #f0f0f0; border-radius:10px;
+  background:linear-gradient(180deg,#f5f5f5,#cfcfcf); color:#090909; font-size:12px; font-weight:850;
+  letter-spacing:2.3px; text-transform:uppercase; cursor:pointer; transition:transform .2s,filter .2s,box-shadow .2s;
+  box-shadow:0 7px 25px rgba(255,255,255,.08);
+}
+.primary-btn:hover { transform:translateY(-2px); filter:brightness(1.07); box-shadow:0 10px 32px rgba(255,255,255,.13); }
+.primary-btn:active { transform:translateY(0); }
+.primary-btn:focus-visible,.answer:focus-visible { outline:2px solid #fff; outline-offset:4px; }
+.arrow { font-size:17px; line-height:1; }
+.under-note { margin-top:23px; color:#575757; font-size:9px; letter-spacing:2.3px; text-transform:uppercase; }
+.quiz-panel { padding:clamp(22px,5vw,42px); }
+.quiz-head { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:28px; }
+.quiz-head .eyebrow { margin:0 0 13px; }
+.category-tag { color:#f0f0f0; }
+.question-number { flex:0 0 auto; min-width:80px; border-left:1px solid #333; padding-left:18px; text-align:right; color:#626262; font-size:11px; letter-spacing:1px; }
+.question-number strong { display:block; color:#f2f2f2; font-size:29px; line-height:1; letter-spacing:-1px; margin-bottom:5px; }
+.progress-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:9px; color:#777; font-size:10px; letter-spacing:1.7px; text-transform:uppercase; }
+.progress-track { height:5px; border-radius:99px; background:#242424; overflow:hidden; margin-bottom:31px; }
+.progress-fill { height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,#777,#fff); box-shadow:0 0 14px rgba(255,255,255,.25); transition:width .35s ease; }
+#question { margin:0 0 25px; max-width:760px; color:#f5f5f5; font-size:clamp(21px,3.8vw,31px); line-height:1.37; font-weight:640; letter-spacing:-.65px; }
+.answers { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.answer {
+  display:flex; align-items:flex-start; gap:14px; min-height:76px; width:100%; padding:17px 17px;
+  color:#d4d4d4; text-align:left; border:1px solid #303030; border-radius:11px;
+  background:linear-gradient(145deg,#111,#090909); cursor:pointer;
+  transition:transform .16s,border-color .16s,background .16s,opacity .16s;
+}
+.answer:hover:not(:disabled) { transform:translateY(-2px); border-color:#777; background:linear-gradient(145deg,#1a1a1a,#0d0d0d); }
+.answer:disabled { cursor:default; }
+.option-key { display:grid; place-items:center; flex:0 0 27px; width:27px; height:27px; border:1px solid #414141; border-radius:7px; color:#888; font-size:10px; font-weight:800; }
+.option-copy { padding-top:3px; font-size:13px; line-height:1.55; }
+.answer.wrong { border-color:#686868; background:#171717; color:#858585; }
+.answer.wrong .option-key { border-color:#999; color:#eee; }
+.answer.correct { border-color:#f0f0f0; background:linear-gradient(145deg,#242424,#121212); color:#fff; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 22px rgba(255,255,255,.055); }
+.answer.correct .option-key { color:#080808; background:#eee; border-color:#eee; }
+.feedback { min-height:23px; margin-top:18px; color:#929292; font-size:11px; letter-spacing:1.15px; text-transform:uppercase; }
+.quiz-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid #222; padding-top:17px; margin-top:18px; color:#5d5d5d; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; }
+.footer { margin-top:18px; text-align:center; color:#444; font-size:9px; letter-spacing:2.2px; }
+.hidden { display:none !important; }
+.result { display:grid; place-items:center; min-height:100vh; border:0; background:transparent; box-shadow:none; text-align:center; }
+.result h2 { margin:0; color:#fff; font-size:clamp(48px,12vw,88px); font-weight:850; letter-spacing:-4px; }
+body.finished { padding:0; background:#000; }
+body.finished::before,.finished .brand-logo,.finished .topline,.finished .footer { display:none; }
+body.finished .shell { width:auto; }
+@media(max-width:640px) {
+  body { padding:18px 13px 22px; align-items:flex-start; }
+  .topline { font-size:8px; letter-spacing:1.5px; margin-bottom:12px; }
+  .brand-logo { width:min(164px,47vw); margin-bottom:2px; }
+  .welcome { padding:32px 21px; }
+  .quiz-panel { padding:22px 17px 18px; }
+  .answers { grid-template-columns:1fr; gap:9px; }
+  .answer { min-height:62px; padding:13px 14px; }
+  .option-copy { font-size:13px; }
+  .quiz-head { margin-bottom:22px; }
+  .question-number { min-width:64px; padding-left:12px; }
+  .question-number strong { font-size:25px; }
+  #question { margin-bottom:20px; }
+  .quiz-foot { font-size:8px; letter-spacing:1px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; }
+}
 </style>
 </head>
 <body>
-<main class="wrap">
-  <img class="brand-logo" src="nhi.png" alt="THE LAST DOOR logo" width="900" height="900">
-  <div class="top" id="topHeader"><span>THE GATE</span><span>ACCESS PROTOCOL // 001</span></div>
-  <section class="card" id="quizCard">
-    <div class="eyebrow">Restricted entry</div>
-    <h1>Prove you<br>belong here.</h1>
-    <p>70 questions. Har sawal ka ek sahi jawab hai. Galat hua toh dobara try karo. Questions aur options har session mein random order mein aayenge.</p>
-    <button class="main-btn" id="startBtn">Begin the test</button>
-    <div class="foot">THINK CAREFULLY. OR DON'T.</div>
+<main class="shell" id="appShell">
+  <div class="topline" id="topline">
+    <div class="topline-left"><span class="status-dot"></span><span>SECURE GATE // ONLINE</span></div>
+    <div class="topline-right">ENTRY PROTOCOL 07.01</div>
+  </div>
+  <img class="brand-logo" src="nhi.png" alt="THE LAST DOOR" width="900" height="900">
+
+  <section class="panel welcome" id="welcomeCard">
+    <div class="eyebrow">Restricted access</div>
+    <h1>Think beyond<br>the obvious.</h1>
+    <p class="lead">Seventy difficult challenges stand between you and the exit. Questions and answer positions are shuffled for every attempt. A wrong answer keeps the current lock closed.</p>
+    <div class="specs">
+      <span class="spec">70 challenges</span>
+      <span class="spec">Advanced difficulty</span>
+      <span class="spec">No skips</span>
+      <span class="spec">Random sequence</span>
+    </div>
+    <button class="primary-btn" id="startBtn" type="button">Enter the protocol <span class="arrow">↗</span></button>
+    <div class="under-note">No hints. No second route. Think carefully.</div>
   </section>
-  <section class="card hidden" id="questionCard" aria-live="polite">
-    <div class="eyebrow">Verification in progress</div>
-    <div class="progress-meta"><span id="counter">QUESTION 01 / 70</span><span id="percent">0%</span></div>
-    <div class="track"><div class="bar" id="bar"></div></div>
+
+  <section class="panel quiz-panel hidden" id="questionCard" aria-live="polite">
+    <div class="quiz-head">
+      <div>
+        <div class="eyebrow">Challenge file <span class="category-tag" id="category">LOGIC</span></div>
+      </div>
+      <div class="question-number"><strong id="currentNumber">01</strong><span id="totalNumber">OF 70</span></div>
+    </div>
+    <div class="progress-head"><span>Access progression</span><span id="percent">0%</span></div>
+    <div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="70" aria-valuenow="0" id="progressTrack"><div class="progress-fill" id="bar"></div></div>
     <h2 id="question">Question goes here</h2>
     <div class="answers" id="answers"></div>
     <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+    <div class="quiz-foot"><span>Wrong answer // Lock remains closed</span><span>Choose A–D</span></div>
   </section>
-  <section class="card hidden result" id="resultCard"><h2>nothing</h2></section>
-  <div class="foot" id="footerNote">NO HINTS. NO EXPLANATIONS.</div>
+
+  <section class="result hidden" id="resultCard" aria-live="polite"><h2>nothing</h2></section>
+  <div class="footer" id="footerNote">THE LAST DOOR // ACCESS IS EARNED</div>
 </main>
 <script>
-const questions = [
-  {
-    "q": "What is 2 + 2?",
-    "correct": "4",
-    "wrong": [
-      "3",
-      "5",
-      "6"
-    ]
-  },
-  {
-    "q": "What is 9 × 7?",
-    "correct": "63",
-    "wrong": [
-      "56",
-      "72",
-      "67"
-    ]
-  },
-  {
-    "q": "What is 12 × 12?",
-    "correct": "144",
-    "wrong": [
-      "124",
-      "132",
-      "154"
-    ]
-  },
-  {
-    "q": "What is 5 squared?",
-    "correct": "25",
-    "wrong": [
-      "10",
-      "15",
-      "20"
-    ]
-  },
-  {
-    "q": "What is the square root of 81?",
-    "correct": "9",
-    "wrong": [
-      "8",
-      "7",
-      "10"
-    ]
-  },
-  {
-    "q": "100 centimetres equal how many metres?",
-    "correct": "1 metre",
-    "wrong": [
-      "10 metres",
-      "0.1 metre",
-      "100 metres"
-    ]
-  },
-  {
-    "q": "1 kilometre equals how many metres?",
-    "correct": "1,000 metres",
-    "wrong": [
-      "100 metres",
-      "10,000 metres",
-      "100,000 metres"
-    ]
-  },
-  {
-    "q": "How many minutes are in one hour?",
-    "correct": "60",
-    "wrong": [
-      "30",
-      "90",
-      "100"
-    ]
-  },
-  {
-    "q": "How many days are in a standard week?",
-    "correct": "7",
-    "wrong": [
-      "5",
-      "6",
-      "8"
-    ]
-  },
-  {
-    "q": "How many days are in a leap year?",
-    "correct": "366",
-    "wrong": [
-      "364",
-      "365",
-      "367"
-    ]
-  },
-  {
-    "q": "How many sides does a square have?",
-    "correct": "4",
-    "wrong": [
-      "3",
-      "5",
-      "6"
-    ]
-  },
-  {
-    "q": "How many sides does a triangle have?",
-    "correct": "3",
-    "wrong": [
-      "2",
-      "4",
-      "5"
-    ]
-  },
-  {
-    "q": "How many degrees are in a right angle?",
-    "correct": "90°",
-    "wrong": [
-      "45°",
-      "180°",
-      "360°"
-    ]
-  },
-  {
-    "q": "What number does the Roman numeral X represent?",
-    "correct": "10",
-    "wrong": [
-      "5",
-      "50",
-      "100"
-    ]
-  },
-  {
-    "q": "What is the smallest prime number?",
-    "correct": "2",
-    "wrong": [
-      "1",
-      "3",
-      "0"
-    ]
-  },
-  {
-    "q": "Which fraction equals 0.5?",
-    "correct": "1/2",
-    "wrong": [
-      "1/3",
-      "1/4",
-      "2/3"
-    ]
-  },
-  {
-    "q": "What is 15% of 200?",
-    "correct": "30",
-    "wrong": [
-      "15",
-      "20",
-      "45"
-    ]
-  },
-  {
-    "q": "What is 144 ÷ 12?",
-    "correct": "12",
-    "wrong": [
-      "10",
-      "11",
-      "14"
-    ]
-  },
-  {
-    "q": "What is 3 × (4 + 2)?",
-    "correct": "18",
-    "wrong": [
-      "14",
-      "20",
-      "24"
-    ]
-  },
-  {
-    "q": "What is the perimeter of a square with sides 5 cm long?",
-    "correct": "20 cm",
-    "wrong": [
-      "10 cm",
-      "15 cm",
-      "25 cm"
-    ]
-  },
-  {
-    "q": "Which is the largest planet in our Solar System?",
-    "correct": "Jupiter",
-    "wrong": [
-      "Saturn",
-      "Earth",
-      "Neptune"
-    ]
-  },
-  {
-    "q": "Which planet is commonly called the Red Planet?",
-    "correct": "Mars",
-    "wrong": [
-      "Venus",
-      "Mercury",
-      "Jupiter"
-    ]
-  },
-  {
-    "q": "What kind of object is the Sun?",
-    "correct": "A star",
-    "wrong": [
-      "A planet",
-      "A moon",
-      "An asteroid"
-    ]
-  },
-  {
-    "q": "What is Earth's natural satellite?",
-    "correct": "The Moon",
-    "wrong": [
-      "Mars",
-      "The Sun",
-      "Venus"
-    ]
-  },
-  {
-    "q": "About how long does Earth take to orbit the Sun once?",
-    "correct": "365 days",
-    "wrong": [
-      "24 hours",
-      "30 days",
-      "600 days"
-    ]
-  },
-  {
-    "q": "About how long does Earth take to rotate once?",
-    "correct": "24 hours",
-    "wrong": [
-      "12 hours",
-      "7 days",
-      "365 days"
-    ]
-  },
-  {
-    "q": "What is the chemical formula for water?",
-    "correct": "H₂O",
-    "wrong": [
-      "CO₂",
-      "O₂",
-      "NaCl"
-    ]
-  },
-  {
-    "q": "What is the chemical symbol for oxygen?",
-    "correct": "O",
-    "wrong": [
-      "Ox",
-      "Og",
-      "Oy"
-    ]
-  },
-  {
-    "q": "What is the chemical symbol for gold?",
-    "correct": "Au",
-    "wrong": [
-      "Ag",
-      "Gd",
-      "Go"
-    ]
-  },
-  {
-    "q": "What is the chemical symbol for sodium?",
-    "correct": "Na",
-    "wrong": [
-      "So",
-      "S",
-      "Sd"
-    ]
-  },
-  {
-    "q": "At sea level, water boils at approximately what temperature?",
-    "correct": "100°C",
-    "wrong": [
-      "0°C",
-      "50°C",
-      "150°C"
-    ]
-  },
-  {
-    "q": "At standard pressure, water freezes at what temperature?",
-    "correct": "0°C",
-    "wrong": [
-      "-10°C",
-      "10°C",
-      "32°C"
-    ]
-  },
-  {
-    "q": "What is the SI unit of force?",
-    "correct": "Newton",
-    "wrong": [
-      "Joule",
-      "Watt",
-      "Pascal"
-    ]
-  },
-  {
-    "q": "What is the SI unit of energy?",
-    "correct": "Joule",
-    "wrong": [
-      "Newton",
-      "Ampere",
-      "Metre"
-    ]
-  },
-  {
-    "q": "What is the SI unit of electric current?",
-    "correct": "Ampere",
-    "wrong": [
-      "Volt",
-      "Ohm",
-      "Watt"
-    ]
-  },
-  {
-    "q": "At ordinary conditions, sound generally travels faster through which medium?",
-    "correct": "Water",
-    "wrong": [
-      "Air",
-      "A vacuum",
-      "It cannot travel through water"
-    ]
-  },
-  {
-    "q": "What process do green plants use to make food with sunlight?",
-    "correct": "Photosynthesis",
-    "wrong": [
-      "Fermentation",
-      "Digestion",
-      "Condensation"
-    ]
-  },
-  {
-    "q": "Which organ pumps blood around the human body?",
-    "correct": "The heart",
-    "wrong": [
-      "The liver",
-      "The stomach",
-      "The pancreas"
-    ]
-  },
-  {
-    "q": "Which organs are primarily responsible for gas exchange during breathing?",
-    "correct": "The lungs",
-    "wrong": [
-      "The kidneys",
-      "The intestines",
-      "The spleen"
-    ]
-  },
-  {
-    "q": "How many bones does a typical adult human skeleton have?",
-    "correct": "206",
-    "wrong": [
-      "106",
-      "156",
-      "306"
-    ]
-  },
-  {
-    "q": "How many legs does a spider have?",
-    "correct": "8",
-    "wrong": [
-      "6",
-      "10",
-      "12"
-    ]
-  },
-  {
-    "q": "What is the larval stage of a butterfly commonly called?",
-    "correct": "Caterpillar",
-    "wrong": [
-      "Tadpole",
-      "Nymph",
-      "Pupa"
-    ]
-  },
-  {
-    "q": "Which group of animals feeds its young with milk?",
-    "correct": "Mammals",
-    "wrong": [
-      "Reptiles",
-      "Fish",
-      "Insects"
-    ]
-  },
-  {
-    "q": "A frog belongs to which animal group?",
-    "correct": "Amphibians",
-    "wrong": [
-      "Reptiles",
-      "Mammals",
-      "Birds"
-    ]
-  },
-  {
-    "q": "What is the largest living land animal?",
-    "correct": "African elephant",
-    "wrong": [
-      "Giraffe",
-      "Hippopotamus",
-      "Rhinoceros"
-    ]
-  },
-  {
-    "q": "Which is the fastest land animal over short distances?",
-    "correct": "Cheetah",
-    "wrong": [
-      "Lion",
-      "Horse",
-      "Grey wolf"
-    ]
-  },
-  {
-    "q": "What is the largest hot desert on Earth?",
-    "correct": "Sahara Desert",
-    "wrong": [
-      "Gobi Desert",
-      "Kalahari Desert",
-      "Arabian Desert"
-    ]
-  },
-  {
-    "q": "Which is the largest ocean on Earth?",
-    "correct": "Pacific Ocean",
-    "wrong": [
-      "Atlantic Ocean",
-      "Indian Ocean",
-      "Arctic Ocean"
-    ]
-  },
-  {
-    "q": "Which mountain is highest above sea level?",
-    "correct": "Mount Everest",
-    "wrong": [
-      "K2",
-      "Kilimanjaro",
-      "Mont Blanc"
-    ]
-  },
-  {
-    "q": "What is the capital of India?",
-    "correct": "New Delhi",
-    "wrong": [
-      "Mumbai",
-      "Kolkata",
-      "Jaipur"
-    ]
-  },
-  {
-    "q": "What is the capital of Japan?",
-    "correct": "Tokyo",
-    "wrong": [
-      "Kyoto",
-      "Osaka",
-      "Nagoya"
-    ]
-  },
-  {
-    "q": "The Taj Mahal is in which Indian city?",
-    "correct": "Agra",
-    "wrong": [
-      "Delhi",
-      "Lucknow",
-      "Bhopal"
-    ]
-  },
-  {
-    "q": "The famous Pyramids of Giza are in which country?",
-    "correct": "Egypt",
-    "wrong": [
-      "Mexico",
-      "Greece",
-      "India"
-    ]
-  },
-  {
-    "q": "How many letters are in the modern English alphabet?",
-    "correct": "26",
-    "wrong": [
-      "24",
-      "25",
-      "28"
-    ]
-  },
-  {
-    "q": "What is CSS mainly used for in web development?",
-    "correct": "Styling web pages",
-    "wrong": [
-      "Storing passwords",
-      "Hosting websites",
-      "Sending email"
-    ]
-  },
-  {
-    "q": "What does HTML stand for?",
-    "correct": "HyperText Markup Language",
-    "wrong": [
-      "HighText Machine Language",
-      "Hyperlink Transfer Main Language",
-      "Home Tool Markup Language"
-    ]
-  },
-  {
-    "q": "What is JavaScript commonly used for on websites?",
-    "correct": "Adding interactivity",
-    "wrong": [
-      "Replacing all internet connections",
-      "Printing physical books",
-      "Charging a battery"
-    ]
-  },
-  {
-    "q": "What does URL stand for?",
-    "correct": "Uniform Resource Locator",
-    "wrong": [
-      "Universal Record Link",
-      "Unified Routing List",
-      "User Reference Location"
-    ]
-  },
-  {
-    "q": "Which two digits are used in the binary number system?",
-    "correct": "0 and 1",
-    "wrong": [
-      "1 and 2",
-      "0 and 9",
-      "2 and 8"
-    ]
-  },
-  {
-    "q": "What does CPU stand for?",
-    "correct": "Central Processing Unit",
-    "wrong": [
-      "Computer Power Utility",
-      "Central Program Upload",
-      "Core Performance User"
-    ]
-  },
-  {
-    "q": "Which statement about ordinary computer RAM is true?",
-    "correct": "It is volatile memory",
-    "wrong": [
-      "It always keeps data without power",
-      "It is an optical disc",
-      "It is a type of printer"
-    ]
-  },
-  {
-    "q": "Which of these is an input device?",
-    "correct": "Keyboard",
-    "wrong": [
-      "Monitor",
-      "Speaker",
-      "Projector"
-    ]
-  },
-  {
-    "q": "Which of these is an output device?",
-    "correct": "Monitor",
-    "wrong": [
-      "Mouse",
-      "Keyboard",
-      "Microphone"
-    ]
-  },
-  {
-    "q": "What does HTTPS help provide for a website connection?",
-    "correct": "Encryption in transit",
-    "wrong": [
-      "Unlimited storage",
-      "A guaranteed virus-free computer",
-      "Faster typing"
-    ]
-  },
-  {
-    "q": "In a typical email address, what does the @ symbol separate?",
-    "correct": "The local part and the domain",
-    "wrong": [
-      "The subject and message",
-      "The username and password",
-      "The file name and extension"
-    ]
-  },
-  {
-    "q": "Which file extension commonly indicates a JPEG image?",
-    "correct": ".jpg",
-    "wrong": [
-      ".mp3",
-      ".txt",
-      ".exe"
-    ]
-  },
-  {
-    "q": "What does PNG stand for?",
-    "correct": "Portable Network Graphics",
-    "wrong": [
-      "Personal Number Grid",
-      "Public Network Gateway",
-      "Printed New Graphic"
-    ]
-  },
-  {
-    "q": "Which spreadsheet function adds numbers together?",
-    "correct": "SUM",
-    "wrong": [
-      "COUNTBLANK",
-      "LEFT",
-      "ROUNDUPTEXT"
-    ]
-  },
-  {
-    "q": "What is a web browser primarily used to do?",
-    "correct": "Access and view websites",
-    "wrong": [
-      "Physically repair a computer",
-      "Create electricity",
-      "Replace the operating system"
-    ]
-  },
-  {
-    "q": "In Windows, which function key commonly refreshes a browser page?",
-    "correct": "F5",
-    "wrong": [
-      "F1",
-      "F8",
-      "F12"
-    ]
-  }
-];
+const questions = [{"q":"A number sequence follows the same rule throughout: 4, 11, 25, 53, 109, __. What comes next?","correct":"221","wrong":["217","219","223"],"category":"MATHEMATICS"},{"q":"If 2x + 3y = 19 and x + y = 7, what is x?","correct":"2","wrong":["3","4","5"],"category":"MATHEMATICS"},{"q":"What is the remainder when 2¹⁰⁰ is divided by 7?","correct":"2","wrong":["1","4","6"],"category":"NUMBER THEORY"},{"q":"Two fair six-sided dice are rolled. What is the probability that their sum is exactly 9?","correct":"1/9","wrong":["1/6","1/12","1/8"],"category":"PROBABILITY"},{"q":"Nine people each shake hands with every other person exactly once. How many handshakes occur?","correct":"36","wrong":["18","45","72"],"category":"COMBINATORICS"},{"q":"The sum of all integers from 1 through n is 210. What is n?","correct":"20","wrong":["19","21","24"],"category":"NUMBER THEORY"},{"q":"The angles of a triangle are in the ratio 2:3:4. What is its largest angle?","correct":"80°","wrong":["60°","90°","100°"],"category":"GEOMETRY"},{"q":"If A:B = 3:4 and B:C = 8:5, what is A:B:C in simplest whole-number form?","correct":"6:8:5","wrong":["3:8:5","6:4:5","12:8:10"],"category":"RATIOS"},{"q":"Which fraction is exactly equal to 0.0375?","correct":"3/80","wrong":["3/40","15/400","1/25"],"category":"FRACTIONS"},{"q":"Evaluate (3⁵ × 3⁻²) ÷ 3².","correct":"3","wrong":["1","9","27"],"category":"EXPONENTS"},{"q":"35% of a number is 84. What is the number?","correct":"240","wrong":["210","252","294"],"category":"PERCENTAGES"},{"q":"The equation x² − 7x + 12 = 0 has two roots. What is the larger root?","correct":"4","wrong":["3","5","6"],"category":"ALGEBRA"},{"q":"A 180-metre train passes a pole in 9 seconds. What is its speed in km/h?","correct":"72 km/h","wrong":["60 km/h","64.8 km/h","80 km/h"],"category":"KINEMATICS"},{"q":"The mean of 8 numbers is 16. If the number 30 is removed, what is the mean of the remaining 7 numbers?","correct":"14","wrong":["13","14.5","15"],"category":"STATISTICS"},{"q":"Calculate 5/6 − 3/8.","correct":"11/24","wrong":["7/24","13/24","1/2"],"category":"FRACTIONS"},{"q":"A rectangle has a diagonal of 17 cm and one side of 8 cm. What is its other side?","correct":"15 cm","wrong":["9 cm","12 cm","16 cm"],"category":"GEOMETRY"},{"q":"Find the next term: 2, 6, 12, 20, 30, __.","correct":"42","wrong":["36","40","44"],"category":"SEQUENCES"},{"q":"What is the smaller angle between the hands of a clock at exactly 4:20?","correct":"10°","wrong":["20°","30°","40°"],"category":"ANGULAR REASONING"},{"q":"If a + b = 12 and ab = 32, what is a² + b²?","correct":"80","wrong":["64","96","112"],"category":"ALGEBRA"},{"q":"A job takes 12 days for 18 workers working at the same constant rate. How many days would 24 workers take?","correct":"9 days","wrong":["8 days","10 days","16 days"],"category":"WORK-RATE PROBLEMS"},{"q":"A rule says: 'If a card has a vowel on one side, it must have an even number on the other.' The visible cards are E, K, 4, and 7. Which cards must be turned to test the rule?","correct":"E and 7","wrong":["E and 4","K and 7","E, 4, and 7"],"category":"FORMAL LOGIC"},{"q":"Three boxes are labelled APPLES, ORANGES, and MIXED. Every label is wrong. You may take one fruit from only one box. From which labelled box should you draw to identify all three boxes?","correct":"The box labelled MIXED","wrong":["The box labelled APPLES","The box labelled ORANGES","Any box gives the same certainty"],"category":"DEDUCTIVE LOGIC"},{"q":"All Varns are Kels. No Kels are Mors. Which statement must be true?","correct":"No Varns are Mors","wrong":["Some Mors are Varns","All Mors are Kels","Some Kels are not Varns"],"category":"SYLLOGISMS"},{"q":"A fair coin is tossed 5 times. What is the probability of getting exactly 3 heads?","correct":"5/16","wrong":["3/16","1/2","5/32"],"category":"PROBABILITY"},{"q":"How many different committees of 4 people can be selected from a group of 7 people?","correct":"35","wrong":["21","28","42"],"category":"COMBINATORICS"},{"q":"A two-digit number has digits that add to 11. Reversing its digits makes the number 27 larger. What is the original number?","correct":"47","wrong":["38","56","74"],"category":"NUMBER PUZZLE"},{"q":"A family has two children. Assume each child is equally likely to be a boy or a girl, independently. Given that at least one child is a boy, what is the probability that both are boys?","correct":"1/3","wrong":["1/2","1/4","2/3"],"category":"CONDITIONAL PROBABILITY"},{"q":"A drawer contains black socks and white socks, mixed together. In complete darkness, what is the minimum number of socks you must take to guarantee a matching-colour pair?","correct":"3","wrong":["2","4","5"],"category":"PIGEONHOLE PRINCIPLE"},{"q":"Three switches outside a closed room control one ordinary bulb inside. You may operate the switches freely but enter the room only once. Which method identifies the correct switch?","correct":"Turn switch A on for a while, turn it off, turn B on, then enter: lit = B, warm and off = A, cold and off = C","wrong":["Turn A and B on together; the lit bulb identifies both","Turn each switch on once, then enter immediately","Turn A on and leave it on; the bulb's brightness identifies the switch"],"category":"EXPERIMENTAL LOGIC"},{"q":"Two ropes each take exactly 60 minutes to burn, but they burn at non-uniform rates. How can you measure exactly 45 minutes using both ropes and a lighter?","correct":"Light rope 1 at both ends and rope 2 at one end; when rope 1 ends, light rope 2's other end","wrong":["Light both ropes at one end; when one ends, 30 minutes remain","Light rope 1 at one end and rope 2 at both ends; when rope 2 ends, 45 minutes have passed","Cut both ropes in half and light all four ends"],"category":"TIME-AND-LOGIC"},{"q":"A net force acts on an 8 kg object and gives it an acceleration of 3 m/s². What is the net force?","correct":"24 N","wrong":["11 N","5 N","32 N"],"category":"NEWTONIAN MECHANICS"},{"q":"Two resistors of 6 Ω and 3 Ω are connected in parallel. What is their equivalent resistance?","correct":"2 Ω","wrong":["3 Ω","4.5 Ω","9 Ω"],"category":"ELECTRICITY"},{"q":"Two resistors of 4 Ω and 6 Ω are connected in series. What is their total resistance?","correct":"10 Ω","wrong":["2 Ω","5 Ω","24 Ω"],"category":"ELECTRICITY"},{"q":"A sound wave travels at 340 m/s and has a frequency of 170 Hz. What is its wavelength?","correct":"2 m","wrong":["0.5 m","4 m","510 m"],"category":"WAVE PHYSICS"},{"q":"Take g = 10 m/s². What gravitational potential energy does a 2 kg object gain when lifted 5 metres?","correct":"100 J","wrong":["25 J","50 J","200 J"],"category":"ENERGY"},{"q":"If the speed of an object doubles while its mass stays constant, by what factor does its kinetic energy change?","correct":"4 times","wrong":["2 times","3 times","8 times"],"category":"ENERGY"},{"q":"An alternating current has a frequency of 50 Hz. What is its period?","correct":"0.02 s","wrong":["0.2 s","0.05 s","50 s"],"category":"OSCILLATIONS"},{"q":"A light ray refracts from glass into air at a nonzero angle to the normal, without total internal reflection. Which way does it bend?","correct":"Away from the normal","wrong":["Towards the normal","It keeps the same direction in every case","It reflects completely in every case"],"category":"OPTICS"},{"q":"For a fixed amount of gas at constant pressure, which relationship is described by Charles's law?","correct":"Volume is directly proportional to absolute temperature","wrong":["Pressure is directly proportional to volume","Volume is inversely proportional to absolute temperature","Pressure is inversely proportional to temperature"],"category":"GAS LAWS"},{"q":"An ideal transformer has 200 turns in its primary coil and 1,000 in its secondary coil. If the primary voltage is 12 V, what is the secondary voltage?","correct":"60 V","wrong":["24 V","48 V","120 V"],"category":"ELECTROMAGNETISM"},{"q":"During a collision, which quantity is conserved for a system with no net external force?","correct":"Total momentum","wrong":["Kinetic energy in every collision","Each object's velocity","Each object's kinetic energy"],"category":"MOMENTUM"},{"q":"A 3 Ω resistor is connected across a 12 V ideal battery. What electrical power is dissipated?","correct":"48 W","wrong":["4 W","36 W","144 W"],"category":"ELECTRIC POWER"},{"q":"Two atoms are isotopes of the same element. What must be the same, and what must be different?","correct":"Same number of protons; different numbers of neutrons","wrong":["Same number of neutrons; different numbers of protons","Same mass number; different electron shells","Different numbers of protons and the same number of neutrons"],"category":"ATOMIC STRUCTURE"},{"q":"In the standard definition used in redox chemistry, oxidation corresponds to what change?","correct":"Loss of electrons","wrong":["Gain of electrons","Gain of neutrons","Loss of protons"],"category":"REDOX CHEMISTRY"},{"q":"A solution at pH 3 has how many times the hydrogen-ion concentration of a solution at pH 5?","correct":"100 times","wrong":["2 times","10 times","1,000 times"],"category":"ACIDS AND BASES"},{"q":"One mole of a substance contains approximately how many specified elementary entities?","correct":"6.022 × 10²³","wrong":["6.022 × 10²⁰","3.00 × 10⁸","9.81 × 10²³"],"category":"CHEMICAL QUANTITIES"},{"q":"Across a typical period of the periodic table from left to right, what generally happens to atomic radius?","correct":"It decreases","wrong":["It increases","It remains exactly constant","It first doubles, then halves"],"category":"PERIODIC TRENDS"},{"q":"Which set of coefficients balances CH₄ + O₂ → CO₂ + H₂O, in that order?","correct":"1, 2, 1, 2","wrong":["96 g/mol","82 g/mol","100 g/mol"],"category":"CHEMICAL EQUATIONS"},{"q":"Using H = 1, S = 32, and O = 16, what is the molar mass of H₂SO₄?","correct":"98 g/mol","wrong":[" ซ 96 g/mol","82 g/mol","100 g/mol"],"category":"STOICHIOMETRY"},{"q":"A DNA strand has the sequence A-C-G-T. What is the complementary DNA sequence?","correct":"T-G-C-A","wrong":["U-G-C-A","A-C-G-T","G-T-A-C"],"category":"MOLECULAR BIOLOGY"},{"q":"During transcription in a typical cell, which molecule is used as the template to make RNA?","correct":"DNA","wrong":["Protein","Lipid","Ribosomal RNA"],"category":"GENETICS"},{"q":"What is the functional filtering unit of the human kidney called?","correct":"Nephron","wrong":["Alveolus","Neuron","Villus"],"category":"HUMAN BIOLOGY"},{"q":"How do enzymes speed up biochemical reactions?","correct":"They lower the activation energy","wrong":["They increase the activation energy","They permanently increase the reaction's energy output","They change the reaction's equilibrium constant"],"category":"BIOCHEMISTRY"},{"q":"During oxygen-producing photosynthesis, the oxygen gas released originates directly from which molecule?","correct":"Water (H₂O)","wrong":["Carbon dioxide (CO₂)","Glucose (C₆H₁₂O₆)","Chlorophyll"],"category":"PHOTOSYNTHESIS"},{"q":"The International Date Line follows approximately which line of longitude for much of its route?","correct":"180°","wrong":["0°","90° E","90° W"],"category":"GEOGRAPHY"},{"q":"Ignoring local political time zones, a 15° difference in longitude corresponds approximately to what difference in local solar time?","correct":"1 hour","wrong":["15 minutes","30 minutes","2 hours"],"category":"EARTH SCIENCE"},{"q":"India's Standard Meridian is closest to which longitude?","correct":"82°30′ E","wrong":["75° E","90° E","68°30′ E"],"category":"INDIAN GEOGRAPHY"},{"q":"The Bosporus Strait connects which two bodies of water?","correct":"The Black Sea and the Sea of Marmara","wrong":["The Aegean Sea and the Adriatic Sea","The Red Sea and the Mediterranean Sea","The Caspian Sea and the Black Sea"],"category":"WORLD GEOGRAPHY"},{"q":"In which year did the French Revolution begin?","correct":"1789","wrong":["1776","1815","1848"],"category":"WORLD HISTORY"},{"q":"On which date was the Constitution of India adopted by the Constituent Assembly?","correct":"26 November 1949","wrong":["15 August 1947","26 January 1950","2 October 1949"],"category":"INDIAN HISTORY"},{"q":"Which Major Rock Edict of Ashoka records his remorse after the Kalinga war?","correct":"Rock Edict XIII","wrong":["Rock Edict I","Rock Edict V","Rock Edict XII"],"category":"ANCIENT HISTORY"},{"q":"In which year did the Berlin Wall open, marking the beginning of its fall?","correct":"1989","wrong":["1979","1991","1995"],"category":"MODERN HISTORY"},{"q":"What decimal number is represented by the binary number 110101₂?","correct":"53","wrong":["45","51","55"],"category":"COMPUTER SCIENCE"},{"q":"What decimal number is represented by the hexadecimal number 2F₁₆?","correct":"47","wrong":["31","45","52"],"category":"NUMBER SYSTEMS"},{"q":"What is the range of values representable by an 8-bit signed integer using two's complement?","correct":"−128 to 127","wrong":["−127 to 128","0 to 255","−255 to 255"],"category":"COMPUTER ARCHITECTURE"},{"q":"For a sorted array of n elements, what is the worst-case time complexity of binary search?","correct":"O(log n)","wrong":["O(1)","O(n)","O(n log n)"],"category":"ALGORITHMS"},{"q":"What is the primary purpose of the Domain Name System (DNS)?","correct":"To translate domain names into IP addresses","wrong":["To encrypt every file on a computer","To assign HTML styles to a webpage","To compress images before upload"],"category":"NETWORKING"},{"q":"What does HTTP status code 403 mean?","correct":"The server understood the request but refuses access","wrong":["The requested resource was not found","The request succeeded","The server moved the resource permanently"],"category":"WEB PROTOCOLS"},{"q":"Which CSS selector has the greatest specificity?","correct":"#content .item","wrong":[".content p","section#main","article.note"],"category":"WEB DEVELOPMENT"},{"q":"In SQL, what does COUNT(*) count in a result set?","correct":"All rows, including rows where individual columns contain NULL","wrong":["Only rows where every column is non-NULL","Only distinct values in the first column","Only rows containing at least one numeric value"],"category":"DATABASES"}];
 let questionOrder = [];
 let index = 0;
 let locked = false;
 const startBtn = document.getElementById('startBtn');
-const quizCard = document.getElementById('quizCard');
+const welcomeCard = document.getElementById('welcomeCard');
 const questionCard = document.getElementById('questionCard');
 const resultCard = document.getElementById('resultCard');
 const questionEl = document.getElementById('question');
 const answersEl = document.getElementById('answers');
-const counter = document.getElementById('counter');
+const currentNumber = document.getElementById('currentNumber');
+const totalNumber = document.getElementById('totalNumber');
 const percent = document.getElementById('percent');
 const bar = document.getElementById('bar');
-const topHeader = document.getElementById('topHeader');
+const progressTrack = document.getElementById('progressTrack');
+const categoryEl = document.getElementById('category');
 const footerNote = document.getElementById('footerNote');
 const feedback = document.getElementById('feedback');
 
@@ -731,61 +190,86 @@ function shuffle(items) {
   }
   return copy;
 }
+function updateProgress(completed) {
+  const value = Math.round((completed / questionOrder.length) * 100);
+  percent.textContent = `${value}%`;
+  bar.style.width = `${value}%`;
+  progressTrack.setAttribute('aria-valuenow', String(completed));
+}
 startBtn.addEventListener('click', () => {
-  if (typeof gtag === 'function') gtag('event', 'quiz_started', { quiz_name: 'the_last_door', question_count: questions.length });
+  if (typeof gtag === 'function') gtag('event', 'quiz_started', { quiz_name: 'the_last_door', question_count: questions.length, difficulty: 'hard' });
   questionOrder = shuffle(questions);
   index = 0;
-  quizCard.classList.add('hidden');
+  welcomeCard.classList.add('hidden');
   questionCard.classList.remove('hidden');
+  document.body.classList.add('in-quiz');
   showQuestion();
 });
 function showQuestion() {
   locked = false;
   const item = questionOrder[index];
-  const done = Math.round((index / questionOrder.length) * 100);
-  counter.textContent = `QUESTION ${String(index + 1).padStart(2, '0')} / ${questionOrder.length}`;
-  percent.textContent = `${done}%`;
-  bar.style.width = `${done}%`;
+  currentNumber.textContent = String(index + 1).padStart(2, '0');
+  totalNumber.textContent = `OF ${questionOrder.length}`;
+  updateProgress(index);
+  categoryEl.textContent = item.category;
   questionEl.textContent = item.q;
   feedback.textContent = '';
   answersEl.replaceChildren();
   const options = shuffle([item.correct, ...item.wrong]);
-  options.forEach(answer => {
+  options.forEach((answer, optionIndex) => {
     const btn = document.createElement('button');
     btn.className = 'answer';
-    btn.textContent = answer;
+    btn.type = 'button';
+    const key = document.createElement('span');
+    key.className = 'option-key';
+    key.textContent = String.fromCharCode(65 + optionIndex);
+    const copy = document.createElement('span');
+    copy.className = 'option-copy';
+    copy.textContent = answer;
+    btn.append(key, copy);
+    btn.setAttribute('aria-label', `Option ${String.fromCharCode(65 + optionIndex)}: ${answer}`);
     btn.addEventListener('click', () => chooseAnswer(btn, answer, item));
     answersEl.appendChild(btn);
   });
 }
 function chooseAnswer(button, answer, item) {
-  if (locked) return;
+  if (locked || button.disabled) return;
   if (answer !== item.correct) {
     button.classList.add('wrong');
-    feedback.textContent = 'Galat jawab. Dobara try karo.';
+    button.disabled = true;
+    feedback.textContent = 'Incorrect // This lock is still active. Reconsider.';
     return;
   }
   locked = true;
   button.classList.add('correct');
   answersEl.querySelectorAll('button').forEach(btn => btn.disabled = true);
-  feedback.textContent = 'Sahi jawab.';
+  feedback.textContent = 'Verified // Next challenge unlocked.';
   const nextIndex = index + 1;
-  bar.style.width = `${Math.round((nextIndex / questionOrder.length) * 100)}%`;
-  percent.textContent = `${Math.round((nextIndex / questionOrder.length) * 100)}%`;
+  updateProgress(nextIndex);
   setTimeout(() => {
     index = nextIndex;
     if (index >= questionOrder.length) {
-      if (typeof gtag === 'function') gtag('event', 'quiz_completed', { quiz_name: 'the_last_door', question_count: questionOrder.length });
+      if (typeof gtag === 'function') gtag('event', 'quiz_completed', { quiz_name: 'the_last_door', question_count: questionOrder.length, difficulty: 'hard' });
       questionCard.classList.add('hidden');
       resultCard.classList.remove('hidden');
-      topHeader.classList.add('hidden');
+      document.getElementById('topline').classList.add('hidden');
+      document.querySelector('.brand-logo').classList.add('hidden');
       footerNote.classList.add('hidden');
       document.body.classList.add('finished');
     } else {
       showQuestion();
+      questionCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }, 420);
+  }, 520);
 }
+// Keyboard support: press 1–4 to choose the visible answer.
+document.addEventListener('keydown', event => {
+  if (questionCard.classList.contains('hidden') || locked) return;
+  if (/^[1-4]$/.test(event.key)) {
+    const button = answersEl.querySelectorAll('button')[Number(event.key) - 1];
+    if (button && !button.disabled) button.click();
+  }
+});
 </script>
 </body>
 </html>
