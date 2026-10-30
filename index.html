@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JB6ZCD4C07"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JB6ZCD4C07');
+</script>
 <!-- AdSense Auto Ads. Ads display only if the site is approved and Auto ads are enabled in AdSense. -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3529745369901340" crossorigin="anonymous"></script>
 <title>NOTHING — The Gate</title>
@@ -721,6 +729,7 @@ function shuffle(items) {
   return copy;
 }
 startBtn.addEventListener('click', () => {
+  if (typeof gtag === 'function') gtag('event', 'quiz_started', { quiz_name: 'the_last_door', question_count: questions.length });
   questionOrder = shuffle(questions);
   index = 0;
   quizCard.classList.add('hidden');
@@ -763,6 +772,7 @@ function chooseAnswer(button, answer, item) {
   setTimeout(() => {
     index = nextIndex;
     if (index >= questionOrder.length) {
+      if (typeof gtag === 'function') gtag('event', 'quiz_completed', { quiz_name: 'the_last_door', question_count: questionOrder.length });
       questionCard.classList.add('hidden');
       resultCard.classList.remove('hidden');
       topHeader.classList.add('hidden');
