@@ -20,6 +20,8 @@
   body { margin:0; min-height:100vh; background:#000; color:var(--text); font-family:Arial,Helvetica,sans-serif; display:grid; place-items:center; padding:22px; overflow-x:hidden; }
   body:before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.15; background-image:linear-gradient(#222 1px,transparent 1px),linear-gradient(90deg,#222 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse at center,#000,transparent 75%); }
   .wrap { width:min(680px,100%); position:relative; }
+  .brand-logo { display:block; width:min(190px,48vw); height:auto; margin:0 auto 18px; object-fit:contain; filter:drop-shadow(0 0 18px rgba(255,255,255,.12)); }
+  body.finished .brand-logo { display:none; }
   .top { display:flex; justify-content:space-between; gap:12px; color:#777; font-size:11px; letter-spacing:3px; margin-bottom:22px; }
   .card { background:rgba(8,8,8,.96); border:1px solid var(--line); padding:clamp(24px,6vw,48px); box-shadow:0 0 0 1px #050505,0 24px 80px #000; }
   .eyebrow { font-size:11px; color:#888; letter-spacing:4px; text-transform:uppercase; margin-bottom:18px; }
@@ -52,6 +54,7 @@
 </head>
 <body>
 <main class="wrap">
+  <img class="brand-logo" src="nhi.png" alt="THE LAST DOOR logo" width="900" height="900">
   <div class="top" id="topHeader"><span>THE GATE</span><span>ACCESS PROTOCOL // 001</span></div>
   <section class="card" id="quizCard">
     <div class="eyebrow">Restricted entry</div>
